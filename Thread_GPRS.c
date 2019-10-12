@@ -9,14 +9,6 @@ void Thread_GPRS(void const *argument);
 osThreadId_t tid_Thread_GPRS;
 osMessageQueueId_t mqid_Thread_GPRS;
 
-int Init_Thread_GPRS(void) {
-  tid_Thread_GPRS = osThreadNew(Thread_GPRS, NULL, NULL);
-  if (!tid_Thread_GPRS) {
-    return -1;
-  }
-  return 0;
-}
-
 static void USART1_Callback(uint32_t event) {
   if (event & ARM_USART_EVENT_RECEIVE_COMPLETE) {
   
@@ -27,11 +19,13 @@ static void USART1_Callback(uint32_t event) {
   }
 }
 
+char msg[512];
+
 void Thread_GPRS(void const *argument) {
 
   osEvent event;
 
-  mqid_Thread_GPRS = osMessageCreate(osMessageQ(Thread_GPRS), tid_Thread_GPRS);
+  mqid_Thread_GPRS = osMessageQueueNew(32, 512, NULL);
   if (!mqid_Thread_GPRS) {
     return;
   }
@@ -48,9 +42,17 @@ void Thread_GPRS(void const *argument) {
   Driver_USART1.Control(ARM_USART_CONTROL_RX, 1);
 
   while (1) {
-    event = osMessageGet(mqid_Thread_GPRS, osWaitForever);
-    if (event.status == osOK) {
+    status = osMessageQueueGet(mqid_Thread_GPRS, msg, NULL, osWaitForever);
+    if (status == osOK) {
       
     }
   }
+}
+
+int Init_Thread_GPRS(void) {
+  tid_Thread_GPRS = osThreadNew(Thread_GPRS, NULL, NULL);
+  if (!tid_Thread_GPRS) {
+    return -1;
+  }
+  return 0;
 }
