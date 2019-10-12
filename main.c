@@ -1,6 +1,6 @@
 
 #include "stm32f10x.h"
-#include "cmsis_os.h"
+#include "cmsis_os2.h"
 
 extern int Init_Thread_LED(void);
 extern int Init_Thread_GPRS(void);
