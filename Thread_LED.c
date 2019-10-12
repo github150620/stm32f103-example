@@ -1,14 +1,14 @@
 
-#include "cmsis_os.h"
 #include "GPIO_STM32F10x.h"
+#include "cmsis_os2.h"
 
 void Thread_LED(void const *argument);
+
 osThreadId tid_Thread_LED;
-osThreadDef(Thread_LED, osPriorityNormal, 1, 0);
 
 int Init_Thread_LED(void) {
 
-  tid_Thread_LED = osThreadCreate(osThread(Thread_LED), NULL);
+  tid_Thread_LED = osThreadNew(Thread_LED, NULL, NULL);
   if (!tid_Thread_LED) {
     return -1;
   }
