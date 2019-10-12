@@ -7,7 +7,7 @@
 
 int main(void) {
   osKernelInitialize();
-	osKernelStart();  
+  osKernelStart();  
   while (1) {
     osDelay(1000);
   }
