@@ -51,6 +51,8 @@ void Thread_GPRS(void const *argument) {
 
   while (1) {
     event = osMessageGet(mqid_Thread_GPRS, osWaitForever);
-    
+    if (event.status == osOK) {
+      
+    }
   }
 }
