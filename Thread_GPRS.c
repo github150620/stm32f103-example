@@ -1,18 +1,16 @@
 
-#include "cmsis_os.h"
 #include "USART_STM32F10x.h"
+#include "cmsis_os2.h"
 
 extern ARM_DRIVER_USART Driver_USART1;
 
 void Thread_GPRS(void const *argument);
-osThreadId tid_Thread_GPRS;
-osThreadDef(Thread_GPRS, osPriorityNormal, 1, 0);
 
-osMessageQId mqid_Thread_GPRS;
-osMessageQDef(Thread_GPRS, 32, uint32_t);
+osThreadId_t tid_Thread_GPRS;
+osMessageQueueId_t mqid_Thread_GPRS;
 
 int Init_Thread_GPRS(void) {
-  tid_Thread_GPRS = osThreadCreate(osThread(Thread_GPRS), NULL);
+  tid_Thread_GPRS = osThreadNew(Thread_GPRS, NULL, NULL);
   if (!tid_Thread_GPRS) {
     return -1;
   }
