@@ -25,7 +25,7 @@ void Thread_GPRS(void const *argument) {
 
   osEvent event;
 
-  mqid_Thread_GPRS = osMessageQueueNew(32, 512, NULL);
+  mqid_Thread_GPRS = osMessageQueueNew(16, 128, NULL);
   if (!mqid_Thread_GPRS) {
     return;
   }
