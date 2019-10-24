@@ -2,7 +2,7 @@
 #include "GPIO_STM32F10x.h"
 #include "cmsis_os2.h"
 
-osThreadId_t tid_Thread_LED;
+static osThreadId_t tid;
 
 void Thread_LED(void const *argument) {
 
@@ -24,8 +24,8 @@ void Thread_LED(void const *argument) {
 
 int Init_Thread_LED(void) {
 
-  tid_Thread_LED = osThreadNew(Thread_LED, NULL, NULL);
-  if (!tid_Thread_LED) {
+  tid = osThreadNew(Thread_LED, NULL, NULL);
+  if (!tid) {
     return -1;
   }
 
