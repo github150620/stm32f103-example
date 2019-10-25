@@ -32,3 +32,7 @@ int LED_Init(void) {
 
   return 0;
 }
+
+void LED_SetTicks(uint32_t u) {
+  ticks = u;
+}
