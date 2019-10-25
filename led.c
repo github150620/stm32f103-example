@@ -3,10 +3,11 @@
 #include "cmsis_os2.h"
 
 static osThreadId_t tid;
+static GPIO_PIN_ID  led;
+static uint32_t     ticks = 1000;
 
-void Thread_LED(void const *argument) {
+static void LED_Thread(void const *argument) {
 
-  GPIO_PIN_ID led;
   led.port = GPIOC;
   led.num = 13;
   
@@ -16,15 +17,15 @@ void Thread_LED(void const *argument) {
 
   while (1) {
     GPIO_PinWrite(led.port, led.num, 1);
-    osDelay(1000);
+    osDelay(ticks);
     GPIO_PinWrite(led.port, led.num, 0);
-    osDelay(1000);
+    osDelay(ticks);
   }
 }
 
-int Init_Thread_LED(void) {
+int LED_Init(void) {
 
-  tid = osThreadNew(Thread_LED, NULL, NULL);
+  tid = osThreadNew(LED_Thread, NULL, NULL);
   if (!tid) {
     return -1;
   }

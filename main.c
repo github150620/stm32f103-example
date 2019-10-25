@@ -2,15 +2,15 @@
 #include "stm32f10x.h"
 #include "cmsis_os2.h"
 
-extern int Init_Thread_LED(void);
-extern int Init_Thread_GPRS(void);
+extern int LED_Init(void);
+extern int GPRS_Init(void);
 
 int main(void) {
   
   osKernelInitialize();
   
-  Init_Thread_LED();
-  Init_Thread_GPRS();
+  LED_Init();
+  GPRS_Init();
   
   osKernelStart();
   
