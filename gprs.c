@@ -6,6 +6,7 @@
 #include "cmsis_os2.h"
 
 #define RX_BUFFER_SIZE 128
+#define TX_BUFFER_SIZE 32
 
 extern ARM_DRIVER_USART Driver_USART1;
 
@@ -14,6 +15,7 @@ static osMessageQueueId_t mqid;
 static ARM_DRIVER_USART*  usart;
 
 static uint8_t rxBuffer[RX_BUFFER_SIZE];
+static uint8_t txBuffer[TX_BUFFER_SIZE];
 static char    msg[RX_BUFFER_SIZE];
 
 static void USART_Callback(uint32_t event) {
@@ -82,7 +84,7 @@ int GPRS_Init(void) {
     return -1;
   }
 
-  tid = osThreadNew(Thread_GPRS, NULL, NULL);
+  tid = osThreadNew(GPRS_Thread, NULL, NULL);
   if (!tid) {
     return -1;
   }
