@@ -18,12 +18,6 @@ static void USART_Callback(uint32_t event) {
 
 static void LOG_Thread(void *argument) {
   osStatus_t status;
-	
-  mqid = osMessageQueueNew(5, TX_BUFFER_SIZE, NULL);
-  if (!mqid) {
-		ticks = 100;
-    return;
-  }
 
   usart = &Driver_USART3;
   usart->Initialize(USART_Callback);
@@ -50,6 +44,11 @@ static void LOG_Thread(void *argument) {
 }
 
 int LOG_Init(void) {
+  mqid = osMessageQueueNew(5, TX_BUFFER_SIZE, NULL);
+  if (!mqid) {
+    return -1;
+  }
+
   tid = osThreadNew(LOG_Thread, NULL, NULL);
   if (!tid) {
     return -1;
