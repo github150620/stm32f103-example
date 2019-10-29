@@ -35,8 +35,8 @@ static void USART_Callback(uint32_t event) {
 
   if (event & ARM_USART_EVENT_RX_TIMEOUT) {
 		usart->Control(ARM_USART_ABORT_RECEIVE, 1);
-		rxBuffer[Driver_USART2.GetRxCount()] = '\0';
-    osMessagePut(mqid, rxBuffer, 0, 0);
+		rxBuffer[usart->GetRxCount()] = '\0';
+    osMessageQueuePut(mqid, rxBuffer, 0, 0);
 		usart->Receive(rxBuffer, sizeof(rxBuffer));
   }
 
@@ -54,7 +54,7 @@ static void GPRS_Handler(char *msg) {
 
 }
 
-static void GPRS_Thread(void const *argument) {
+static void GPRS_Thread(void *argument) {
   osStatus_t status;
 
   usart = &Driver_USART1;
@@ -90,4 +90,8 @@ int GPRS_Init(void) {
   }
 
   return 0;
+}
+
+int GPRS_Send(uint8_t *buf, uint8_t len) {
+  
 }
