@@ -14,6 +14,7 @@ extern ARM_DRIVER_USART Driver_USART1;
 
 static osThreadId_t       tid;
 static osMessageQueueId_t mqid;
+static osTimerId_t        tmid;
 static ARM_DRIVER_USART*  usart;
 
 static uint8_t rxBuffer[RX_BUFFER_SIZE];
@@ -57,6 +58,10 @@ static void USART_Callback(uint32_t event) {
   }
 }
 
+static void Timer_Callback(void *argument) {
+
+}
+
 static void GPRS_Handler(char *msg) {
 
 }
@@ -76,6 +81,8 @@ static void GPRS_Thread(void *argument) {
   usart->Control(ARM_USART_CONTROL_TX, 1);
   usart->Control(ARM_USART_CONTROL_RX, 1);
 
+  osTimerStart(tmid, 1000);
+
   while (1) {
     status = osMessageQueueGet(mqid, msg, NULL, osWaitForever);
     if (status == osOK) {
@@ -88,6 +95,11 @@ int GPRS_Init(void) {
 
   mqid = osMessageQueueNew(4, RX_BUFFER_SIZE, NULL);
   if (!mqid) {
+    return -1;
+  }
+
+  tmid = osTimerNew(Timer_Callback, osTimerOnce, NULL, NULL);
+  if (!tmid_) {
     return -1;
   }
 
