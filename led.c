@@ -6,7 +6,7 @@ static osThreadId_t tid;
 static GPIO_PIN_ID  led;
 static uint32_t     ticks = 1000;
 
-static void LED_Thread(void const *argument) {
+static void LED_Thread(void *argument) {
 
   led.port = GPIOC;
   led.num = 13;
