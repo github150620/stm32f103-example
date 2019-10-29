@@ -5,6 +5,8 @@
 #include "USART_STM32F10x.h"
 #include "cmsis_os2.h"
 
+#include "log.h"
+
 #define RX_BUFFER_SIZE 128
 #define TX_BUFFER_SIZE 32
 
@@ -26,9 +28,11 @@ static void USART_Callback(uint32_t event) {
   }
 
 	if(event & ARM_USART_EVENT_TX_UNDERFLOW) {
+    LOG_Print("ARM_USART_EVENT_TX_UNDERFLOW\n");
   }
 
 	if(event & ARM_USART_EVENT_RX_OVERFLOW) {
+    LOG_Print("ARM_USART_EVENT_RX_OVERFLOW\n");
 		usart->Control(ARM_USART_ABORT_RECEIVE, 1);
 		usart->Receive(rxBuffer, sizeof(rxBuffer));
   }
@@ -41,12 +45,15 @@ static void USART_Callback(uint32_t event) {
   }
 
 	if(event & ARM_USART_EVENT_RX_BREAK) {
+    LOG_Print("ARM_USART_EVENT_RX_BREAK\n");
   }
 
 	if(event & ARM_USART_EVENT_RX_FRAMING_ERROR) {
+    LOG_Print("ARM_USART_EVENT_RX_FRAMING_ERROR\n");
   }
 
 	if(event & ARM_USART_EVENT_RX_PARITY_ERROR) {
+    LOG_Print("ARM_USART_EVENT_RX_PARITY_ERROR\n");
   }
 }
 
