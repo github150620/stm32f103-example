@@ -99,7 +99,7 @@ int GPRS_Init(void) {
   }
 
   tmid = osTimerNew(Timer_Callback, osTimerOnce, NULL, NULL);
-  if (!tmid_) {
+  if (!tmid) {
     return -1;
   }
 
