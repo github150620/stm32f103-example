@@ -22,38 +22,38 @@ static uint8_t txBuffer[TX_BUFFER_SIZE];
 static char    msg[RX_BUFFER_SIZE];
 
 static void USART_Callback(uint32_t event) {
-	if (event & ARM_USART_EVENT_RECEIVE_COMPLETE) {
+  if (event & ARM_USART_EVENT_RECEIVE_COMPLETE) {
   }
 
-	if(event & ARM_USART_EVENT_SEND_COMPLETE) {
+  if(event & ARM_USART_EVENT_SEND_COMPLETE) {
   }
 
-	if(event & ARM_USART_EVENT_TX_UNDERFLOW) {
+  if(event & ARM_USART_EVENT_TX_UNDERFLOW) {
     LOG_Print("ARM_USART_EVENT_TX_UNDERFLOW\n");
   }
 
-	if(event & ARM_USART_EVENT_RX_OVERFLOW) {
+  if(event & ARM_USART_EVENT_RX_OVERFLOW) {
     LOG_Print("ARM_USART_EVENT_RX_OVERFLOW\n");
-		usart->Control(ARM_USART_ABORT_RECEIVE, 1);
-		usart->Receive(rxBuffer, sizeof(rxBuffer));
+    usart->Control(ARM_USART_ABORT_RECEIVE, 1);
+    usart->Receive(rxBuffer, sizeof(rxBuffer));
   }
 
   if (event & ARM_USART_EVENT_RX_TIMEOUT) {
-		usart->Control(ARM_USART_ABORT_RECEIVE, 1);
-		rxBuffer[usart->GetRxCount()] = '\0';
+    usart->Control(ARM_USART_ABORT_RECEIVE, 1);
+    rxBuffer[usart->GetRxCount()] = '\0';
     osMessageQueuePut(mqid, rxBuffer, 0, 0);
-		usart->Receive(rxBuffer, sizeof(rxBuffer));
+    usart->Receive(rxBuffer, sizeof(rxBuffer));
   }
 
-	if(event & ARM_USART_EVENT_RX_BREAK) {
+  if(event & ARM_USART_EVENT_RX_BREAK) {
     LOG_Print("ARM_USART_EVENT_RX_BREAK\n");
   }
 
-	if(event & ARM_USART_EVENT_RX_FRAMING_ERROR) {
+  if(event & ARM_USART_EVENT_RX_FRAMING_ERROR) {
     LOG_Print("ARM_USART_EVENT_RX_FRAMING_ERROR\n");
   }
 
-	if(event & ARM_USART_EVENT_RX_PARITY_ERROR) {
+  if(event & ARM_USART_EVENT_RX_PARITY_ERROR) {
     LOG_Print("ARM_USART_EVENT_RX_PARITY_ERROR\n");
   }
 }
@@ -73,11 +73,11 @@ static void GPRS_Thread(void *argument) {
   usart->Initialize(USART_Callback);
   usart->PowerControl(ARM_POWER_FULL);
   usart->Control(ARM_USART_MODE_ASYNCHRONOUS |
-                        ARM_USART_DATA_BITS_8 |
-                        ARM_USART_PARITY_NONE |
-                        ARM_USART_STOP_BITS_1 |
-                        ARM_USART_FLOW_CONTROL_NONE, 
-                        115200);
+                 ARM_USART_DATA_BITS_8 |
+                 ARM_USART_PARITY_NONE |
+                 ARM_USART_STOP_BITS_1 |
+                 ARM_USART_FLOW_CONTROL_NONE, 
+                 115200);
   usart->Control(ARM_USART_CONTROL_TX, 1);
   usart->Control(ARM_USART_CONTROL_RX, 1);
 
